@@ -4,7 +4,7 @@
  * No direct calls to external APIs from the client.
  */
 
-const PROD_BACKEND_URL = 'https://rainfall-intelligence.onrender.com';
+const PROD_BACKEND_URL = 'https://rainfall-intelligence-backend.onrender.com';
 
 const resolveApiBase = () => {
   // 1. Explicit environment variable configured in Vite / Render build
