@@ -1,0 +1,44 @@
+services:
+  # Backend API Service (FastAPI)
+  - type: web
+    name: rainfall-intelligence-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: CORS_ORIGINS
+        value: "*"
+      - key: DATABASE_URL
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: LLM_API_KEY
+        sync: false
+      - key: LLM_PROVIDER
+        value: groq
+      - key: LLM_MODEL
+        value: llama-3.3-70b-versatile
+      - key: LLM_BASE_URL
+        value: https://api.groq.com/openai/v1
+      - key: MOSDAC_USERNAME
+        sync: false
+      - key: MOSDAC_PASSWORD
+        sync: false
+
+  # Frontend Static Site (React Vite)
+  - type: web
+    name: rainfall-intelligence-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
+        value: https://rainfall-intelligence-backend.onrender.com/api
